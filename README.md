@@ -1,5 +1,7 @@
 # Personal_finances_analysis
 
+![image](https://github.com/user-attachments/assets/bfced001-e6a7-4590-8ebf-f5d094bb0c15)
+
 This repository has a ipynb file that was used to analyze data from my personal finances, made in a spreadsheet. 
 There is further explanation in the file, but in summary, the following was made:
 * Data cleaning and analysis of correlation;
