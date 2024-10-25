@@ -3,7 +3,10 @@
 ![image](plans.png)
 
 This project intends to create a system and analysis tool for personal finances.
-At the end, I wish to have clear steps to take my personal finances spreadsheet data of a month, and have it analyzed with python code that will transform it, and previous months already recorded, to make a new file, with my whole historic. Finally, this historic will show my monthly analysis results in a PowerBI report, telling me about my current consuming behaviour, and the generated predictions for future months. 
+At the end, I wish to have an ETL complete system, with clear steps to:
+* Take my personal finances spreadsheet data of a month;
+* Save it in a folder to have it analyzed with python code that will transform it and make a new file, with my whole historic.
+* Finally, this historic will show my monthly analysis results in a PowerBI report, telling me about my current consuming behaviour, and the generated predictions for future months. 
 
 # Step 1: Finances File
 
