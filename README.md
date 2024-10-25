@@ -2,53 +2,51 @@
 
 ![image](plans.png)
 
-# Step 1: Finances File
-Firstly, I created a googlesheet file with the intention of organizing my finances file in a way that fitted my personal goals. 
-This included the creation of 3 pages:
+This project intends to create a system and analysis tool for personal finances.
+At the end, I wish to have clear steps to take my personal finances spreadsheet data of a month, and have it analyzed with python code that will transform it, and previous months already recorded, to make a new file, with my whole historic. Finally, this historic will show my monthly analysis results in a PowerBI report, telling me about my current consuming behaviour, and the generated predictions for future months. 
 
+# Step 1: Finances File
+
+Firstly, my file with the intention of organizing my finances file includes only 2 pages:
 - "Finances": current month expenses; 
-- "Historic": resultant values of expenses from previous months;
-- "Investments": how much money I have invested and into what;
+- "Investments": how much money I have invested and into what. This will not be used in the analysis section, to limit the scope of this project, but can be visualized in the final PowerBI report;
 
 ## "Finances" 
 Finances should:
-* Be as clear as possible on the overall expenses that I have every month consistently;
-* Be easy for me to know if I will end the month positively;
-* Hold which things I have yet to pay in that month (which prevents me from forgetting to do it);
-* Allow me to make decisions on what to cut with ease (example: in a month where my salary will be delayed, I might have to cut on a particular item, so I turn it off in its respective row);
-Every month these values will change and "be lost", because the current file only worries about that month, which helps it to not become cluttered.
-There is a a "category" column which, besides "Normal Expenses" and "Earnings", also allows me to set things like "ifood" or "transportation", values whose cost are less predictable for every month. For example, rent doesn't change and is seen as a normal expense, cost in transportation does change and will be part of a type of expense which will be called "dynamic expense" in this project. Not only do I want to keep track of these dynamic expenses, I want to have as many details as possible from them: "what" was purchased, "where" it was purchased, "when" it was purchased, and even why when possible.  
+* Be as clear as possible on the expenses that I have in that month;
+* Be easy for me to know if I will end the month positively or negatively;
+* Show which things I have yet to pay in that month and which I have not;
+* Allow me to make decisions on what to cut with ease (example: in a month where my salary will be delayed, I might have to cut on a particular item, so I turn it off in its respective row and I can see its impact on the month results);
+Every month these values will be cleared, as the current file only worries about that month, to not become cluttered.
+The file has rows colored in blue, that simply have a name, to separate expenses of different categories. Additionally,
+there is a "type" column that can be used to set things that are costs or incomes, and also have the option to add
+special types. These special types are used when a particular spending is a group of several separate spendings throughout
+the month, such as "uber" or "ifood". In order to keep track both of the overall value of this expense, and the individual ones,
+we make it be a "type" and keep all expenses of that type turned off. Then, we have a special row whose cost is the sum of all
+expenses of that special type. These special costs will be called "dynamic expense" in this project. Not only do I want to keep track of these dynamic expenses, I want to have as many details as possible about them: "what" was purchased, "where" it was purchased, "when" it was purchased, and even why when possible.  
 At the end of every month the finances file must be duplicated in order to keep record of every detail from previous months.
-
-
-## "Historic"
-The historic must retain an overview of all my expenses, holding things such as "water bill", "month market cost",
-"rent", and also the final value of the month for each dynamic expense. I would then put graphs in this section, showing how my expenses of each category changed over the months. Currently this page would be set manually, which is troublesome. 
- 
-
-#### How could We Improve the Usability/Responsiveness of this tool?
-It is noticeble that the main problem with this file is the manual work to keep a consistent historic.
-The historic data being manually derived from finances is not a good idea. 
-It would be fairly useful if, with the click of a button, all that recorded information from the finances file was recorded to a historic, and then cleared from the finances file in order to start a new month, updating everything related to the historic itself. I assume this is not something I could practically make for myself in a single file with sheets alone, although my current knowledge of its capabilities is limited so it could be possible. 
-In a future venture, we might conclude possible fixes for this problem, such as using a different tool, or, possibly, making a new sheet for each month (either making a new page, or a new file altogether) and then inputting the file(s) in PowerBI or python code in order to display the new updated historic. This historic only gets fully updated once a month, so an added step to get it can be reasonable.
-With that said, although cumbersome, this initial organization has everything we need about the expectations of interaction and what data will exist in this scenario. Future iterations of this project might require coming back to these definitions.
-
 
 # Step 2: Correlation Analysis
 This repository has a ipynb file <a target="_blank" href="https://colab.research.google.com/github/emilymarquessalum/personal_finances_analysis/blob/main/finances.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a> that was used to analyze data from my personal finances.
-The analysis made is fully aware that the usefulness of many of the models used on it will be insignificant for predictions, given the small sample. It is supposed to act as an exploratory view of the data, bringing and testing different levels of hypothesis about its behaviour. 
+</a> that was used to research the data from my personal finances, and see which tools would prove most useful to be passed to the official modular code.
+The analysis made is fully aware that the usefulness of many of the models on it will be statistically non-significant for predictions, given the small sample. It as an exploratory view of the data, bringing and testing different levels of hypothesis about its behaviour. 
 There is further explanation in the file, but in summary the following steps were employed:
 * Data cleaning (removing empty and redundant information) and analysis of correlation;
 * Linear regression using "time" (index) as input variable;
 * Simple Auto Regression;
+* Logistical Regression and Decision Trees;
+* Predictions for every combination of Factors;
 
+The results of this research will be considered in the next step.
 
-$ Step 3: Dashboard in Power BI
+# Step 3:
 
-
-# Data secrecy
+# Step 4: Dashboard in Power BI
+Divided into 3 Pages:
+- **Spending Behavior:** Shows the evolution of spending throughout each month, the dynamic expenses, and the final results of the month;
+- **Forecasts:** Based on the studied models, it presents expected cost data for the upcoming months;
+- **Investments:** A simple screen that shows the current investment amounts. It will be a straightforward screen for this project.# Data secrecy
 
 Since the financial data that was explored was personal, I followed measures to keep my actual data privated.
 Firstly, I considered the following reference: https://mostly.ai/blog/data-anonymization-in-python
