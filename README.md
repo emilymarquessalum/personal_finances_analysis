@@ -40,7 +40,10 @@ There is further explanation in the file, but in summary the following steps wer
 
 The results of this research will be considered in the next step.
 
-# Step 3:
+# Step 3: Python Code
+A python project will be created to read a group of finances files and create a historic file from them.
+Additionally, it will make a page in the file for predictions that will be generated from the data. 
+This project doesn't require an interface, as it will only have a single functionality and only files as input. 
 
 # Step 4: Dashboard in Power BI
 Divided into 3 Pages:
