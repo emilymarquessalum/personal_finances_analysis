@@ -20,14 +20,39 @@ Finances should:
 * Be easy for me to know if I will end the month positively or negatively;
 * Show which things I have yet to pay in that month and which I have not;
 * Allow me to make decisions on what to cut with ease (example: in a month where my salary will be delayed, I might have to cut on a particular item, so I turn it off in its respective row and I can see its impact on the month results);
+
 Every month these values will be cleared, as the current file only worries about that month, to not become cluttered.
-The file has rows colored in blue, that simply have a name, to separate expenses of different categories. Additionally,
-there is a "type" column that can be used to set things that are costs or incomes, and also have the option to add
-special types. These special types are used when a particular spending is a group of several separate spendings throughout
+
+### Specific Structure chosen
+
+There are 6 values that are calculated from the columns of costs, and they define which values the cost needs to have. Those are: Positive Value, Minimum Expense, Maximum Expense, Current, Final Minimum and Final Maximum. 
+
+* Positive Value: Sum of all my earnings that I will be getting this month;
+* Minimum Expense: Sum of all the minimal value of all my expenses that I expect to use this month;
+* Maximum Expense: Sum of all the maximum value of all my expenses that I expect to use this mont;
+* Current: My Positive Value, subtracted by all expenses that I already paid. That is, the ammount of money I expect myself to have at that exact moment;
+* Final Minimum: My Positive Value, subtracted by all minimum values of my expenses. This is the most ammount of money I expect to have by the end of the month;
+* Final Maximum: My Positive Value, subtracted by all maximum values of my expenses. This is the least ammount of money I epxect to have by the end of the month;
+
+To account for that, each row of cost has 7 columns: 
+* Paid: a checkbox that represents if that cost was already paid for the month;
+* On: a checkbox, tells if the cost will be considerede in any of the calculations;
+* Type: a dropdown, which includes the differentiation between costs and gains, and also serves a purpose in the dynamic-cost type system (explained below);
+* Name: Just gives a name for the cost, will be relevant when using analysis because it will identify the expense which will be minitored through N months;
+* Description: Can have any value, but its common usage is defining a date, or other useful specification for later time;
+* Minimum expense and Maximum Expense. The minimum and maximum expense value can be used in two scenarios: for expenses which I am not exactly sure on the exact value I will pay, but I have a reasonable range that I can work with, or to represent a "current cost" vs "maximum cost" that I am allowed to use in any given cost.
+
+Additionally, the file has special rows colored in blue, that instead of having these fields simply have a name, and are used to separate expenses of different categories.  
+
+### Dynamic-Cost Type System
+There are special types that are used when a particular spending is of a group of several separate spendings throughout
 the month, such as "uber" or "ifood". In order to keep track both of the overall value of this expense, and the individual ones,
 we make it be a "type" and keep all expenses of that type turned off. Then, we have a special row whose cost is the sum of all
 expenses of that special type. These special costs will be called "dynamic expense" in this project. Not only do I want to keep track of these dynamic expenses, I want to have as many details as possible about them: "what" was purchased, "where" it was purchased, "when" it was purchased, and even why when possible.  
 At the end of every month the finances file must be duplicated in order to keep record of every detail from previous months.
+
+![image](https://github.com/user-attachments/assets/6c75f407-461e-4c9f-ab13-052363bfd9b2)
+
 
 # Step 2: Correlation Analysis
 This repository has a ipynb file <a target="_blank" href="https://colab.research.google.com/github/emilymarquessalum/personal_finances_analysis/blob/main/finances.ipynb">
