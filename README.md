@@ -26,12 +26,6 @@ Firstly, the file that organizes my finances of a month includes 2 pages:
 - "Investments": how much money I have invested and into what. This will not be used in the analysis section, to limit the scope of this project, but can be visualized in the final PowerBI report;
 
 ## "Finances" 
-Finances should:
-* Be clear on the expenses of that month;
-* Tell me if the month positively or negatively;
-* Show which things I have yet to pay in that month;
-* Allow me to make decisions on what to cut (example: I might have to cut on a particular item, so I turn it off in its respective row and I can see its impact on the month results);
-
 
 ### Specific Structure chosen
 
