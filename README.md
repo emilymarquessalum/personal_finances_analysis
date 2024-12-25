@@ -8,6 +8,7 @@ This is a system and analysis tool for personal finances. It is an ETL complete 
 * By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**. This historic will show my monthly analysis results in a **PowerBI** report, telling me about my current consuming behaviour;
 
 2. Prediction Model
+* Evaluate, given previous months, when and how much money in average will be spent in leisure costs every day of a month (such as transportation, eating out, etc);
 
 
 
