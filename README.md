@@ -1,14 +1,21 @@
+[incomplete, the description below is a plan to be executed] 
+
 # Personal Finances Analysis
 
 # Goal
 
-This is a system and analysis tool for personal finances. It is an ETL complete system, with clear steps to monitor personal finance information in a **spreadsheet**. Each month will have its own file, to keep a simplified format to short term decision making. 
+This is a system and analysis tool with clear steps to monitor personal finance information in a **spreadsheet**, visualize historical data and have **predictions** of specific cost categories. Each month will have its own file, to keep a simplified format to short term decision making. 
 
 1. Visualization:
-* By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**. This historic will show my monthly analysis results in a **PowerBI** report, telling me about my current consuming behaviour;
+* By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**. This historic will show the monthly analysis results in a **PowerBI** report, showing the current consuming behaviour (with graphs of costs over several months);
 
 2. Prediction Model
-* Evaluate, given previous months, when and how much money in average will be spent in leisure costs every day of a month (such as transportation, eating out, etc);
+The prediction model is mainly used for dynamic expense categories, such as transportation, eating out, etc. Any type of leisure is often a dynamic expense, although the model is not limited to it.
+
+* Any dinamic cost category can be set to be event-based: N events of X cost (example: you can set that the eating out category happens only 4 times in a month, specifically on Saturdays,and that the average cost of an eating out event is 20 bucks);
+* An evaluation-by-historic can be enabled. Given previous months, when and how much money in average will be spent for every day of a month specifically;
+* event-based and evaluation-by-historic can be simultaneously set. From this, Q
+* The predictions are set in calendar format, and react to new inputs. If a cost was predicted to be 20 in a specific day, and the actual value was 30, the model will recalculate each day to account for that value, always equating to the limit cost of that category (if possible);
 
 
 
