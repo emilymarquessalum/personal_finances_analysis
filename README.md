@@ -35,7 +35,7 @@ The prediction model is mainly used for dynamic expense categories, such as tran
 
 # Step 1: Finances File
 
-<-- 
+<!-- 
 (removed for now)
 Firstly, the file that organizes the finances of a particular month includes 2 pages:
 - "Finances": current month expenses; 
