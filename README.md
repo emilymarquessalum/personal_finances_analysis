@@ -7,10 +7,10 @@
 This is a system/analysis tool with clear steps to monitor personal finance information in a **spreadsheet**, visualize **historical** data and have **predictions** of specific cost categories. Each month has its own file, to keep a simplified format to short term decision making. A group of files can then be read for advanced functionality. 
 
 1. Visualization:
-* By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**!
+* By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**;
 * This historic will show the monthly analysis results in a **PowerBI** report, showing the current consuming behaviour (with graphs of costs over several months);
 * It will also show future months and years, with how much money will be saved overtime;
-* A separate file can be used to set goals for the future (example: purchase a house) setting either a year-target or a savings-targer for it to happen. These goals will be shown in the graphs. Additionally, these goals can change values (example: setting so that the cost "rent" goes from X to Y once the house goal is reached);
+* A separate file can be used to set goals for the future (example: purchase a house) setting either a year-target or a savings-target for it to happen. These goals will be shown in the graphs. Additionally, these goals can change values (example: setting so that the cost "rent" goes from X to Y once the house goal is reached);
 
 
 2. Prediction Model
