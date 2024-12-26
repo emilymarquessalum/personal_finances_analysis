@@ -9,6 +9,9 @@ This is a system/analysis tool with clear steps to monitor personal finance info
 1. Visualization:
 * By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**!
 * This historic will show the monthly analysis results in a **PowerBI** report, showing the current consuming behaviour (with graphs of costs over several months);
+* It will also show future months and years, with how much money will be saved overtime;
+* A separate file can be used to set goals for the future (example: purchase a house) setting either a year-target or a savings-targer for it to happen. These goals will be shown in the graphs. Additionally, these goals can change values (example: setting so that the cost "rent" goes from X to Y once the house goal is reached);
+
 
 2. Prediction Model
 The prediction model is mainly used for dynamic expense categories, such as transportation, eating out, etc. Any type of leisure is often a dynamic expense, although the model is not limited to it.
