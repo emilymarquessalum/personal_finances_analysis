@@ -29,8 +29,33 @@ The prediction model is mainly used for dynamic expense categories, such as tran
 
 # Other Tools
 
-[Projection lab](https://app.projectionlab.com/): web application used for long term planning. Visualization of savings over many years, capabilities to set up events that trigger changes in value of income and costs, and creation of multiple plans, to account for different possibilities. In that sense, this tool was a good inspiration. **However, the paid version doesn't allow you to save information, serving as mere experimentation.** 
+This section is merely to list some apps that were taken in consideration when building this tool. They are ordered by decreasing relevance relative to my perspective of quality and personal preference.
+To simplify writting, I will be using the following emojis at the end of each app to represent:
+* 🍓, from 1 to 4, to represent quality of UI/UX;
+* 🌐 to free (or self-hosted) sync capabilities OR export/import functionality, 🕸️ when not;
+* 🌟 to open souce projects that receive contributions as of 2024;
+* 👛 to budget systems that allow viewing resulting costs of the value expected for a category VS the current value spent. for FREE;
+* 🚀 Has a functionality that takes in consideration the costs from previous months when calculating an expense that will exist in a future month (essencially, some prediction-like system for non-constant values);
+* 🔮 Has functionality to help tracking when a certain goal would be achievable if the current budget habits are followed; 
 
+
+
+[Projection lab](https://app.projectionlab.com/): web application used for long term planning. Visualization of savings over many years, capabilities to set up events that trigger changes in value of income and costs, and creation of multiple plans, to account for different possibilities. **However, the paid version doesn't allow you to save information, serving as mere experimentation.** Despite not being usable for free, this is still very inspiring, so much so it will stay on top of this list untill dethroned by a free app with similar functionality; 🍓🍓🍓🕸️🔮
+
+
+[Minhas Finanças](): Very good app to track your money and expenses, allowing you to see your expenses and accumulated value through several months. The budget functionality, similar to GoodBudget, is very good but is unfortunetely locked by a paid subscription (that's a big disadvantadge from my perspective as a user). Syncing  with other devices and exporting the data to csv are also both locked. This doesn't allow the user to own their own data. Despite that, unless you really need that control over your data, this is the best configuration of features for a free price; 🍓🍓🍓🍓🕸️
+
+
+[Actual Budget](https://actualbudget.org): Open Source and self-hosted, very interesting system. It utilizes an envelop budget system, which I enjoy. It has a slightly different philosophy from my personal preference, in the way it forces a lot of manual insertions to setup every month. The intention is to learn with your previous months and plan every month budget individually, instead of assuming the same costs for every month, which also helps in relation to irregular expenses. Additionally, there are options to set the budget of a category to be the average of X previous expenses. That's a feature I have been wanting to find in other systems, and it really adds to the quality of this system. Any personal-finances strategy should allow and ask for some amount of month variability because not all months are the same, while also giving you some kind of cool to apply the knowledge of previous months when calculating the costs of next months. It loses some features I like with different strategies, such as: Ease of use (not having to set up things all the time is preferable), see the result of following a set of habits over a series of months (which can technically be done in Actual but requires you to set every month manually making it less practical). Overall the features don't make it bad to use and its preferable over many other options. The design principles simply don't allign completely what works best for me, but it gets very close while offering desired functionalities;   🍓🍓🌐🌟👛🚀
+
+
+[Cashew](): Open Source app, does not accept external contributions. Has limited visualization of future months, the budget functionality isn't accounted in a calculation of expenses (you can't directly see how much money you would have in the end of the month given you were to use all the money available in a specific), no direct functionality to accumulate money from previous months. 🍓🍓🌐
+
+
+[Goodbudget](goodbudget.com): very minimalistic app, with budget categories with a maximum value associated with them where you put the expenses made. The limitation of the number of budgets, and the lack of export functionality make this not ideal. 🍓🕸️
+
+
+[YNAB](https://www.ynab.com): Paid only (the reason why, despite very good, this is in last place). 🍓🍓🍓🕸️
 
 
 # Step 1: Finances File
