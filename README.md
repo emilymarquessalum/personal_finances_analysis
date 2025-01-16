@@ -4,7 +4,7 @@
 
 # Goal
 
-This is a system/analysis tool with clear steps to monitor personal finance information in a **spreadsheet**, visualize **historical** data and have **predictions** of specific cost categories. Each month has its own file, to keep a simplified format to short term decision making. A group of files can then be read for advanced functionality. There are plans to also make an UI to allow for advanced visualization of decision making.
+This is a system/analysis tool to monitor personal finances, visualize **historical** data and have **predictions** of specific cost categories. Each month has its own file, to keep a simplified format to short term decision making. A group of files can then be read for advanced functionality. There are plans to also make an UI to allow for advanced visualization of decision making.
 
 1. Visualization:
 * By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**;
@@ -58,44 +58,9 @@ To simplify writting, I will be using the following emojis at the end of each ap
 [YNAB](https://www.ynab.com): Paid only (the reason why, despite very good, this is in last place). 🍓🍓🍓🕸️
 
 
-# Step 1: Finances File
+# Step 1: Finances App
 
-<!-- 
-(removed for now)
-Firstly, the file that organizes the finances of a particular month includes 2 pages:
-- "Finances": current month expenses; 
-- "Investments": how much money I have invested and into what. This will not be used in the analysis section, to limit the scope of this project, but can be visualized in the final PowerBI report;
--->
 
-## "Finances" 
-
-### Specific Structure chosen
-
-There are 6 values that are calculated from the columns of costs, and they define which values each cost needs to have. Those are: Positive Value, Minimum Expense, Maximum Expense, Current, Final Minimum and Final Maximum. 
-
-* Positive Value: Sum of all my earnings that I will be getting this month;
-* Minimum Expense: Sum of all the minimal value of all my expenses that I expect to use this month;
-* Maximum Expense: Sum of all the maximum value of all my expenses that I expect to use this mont;
-* Current: My Positive Value, subtracted by all expenses that I already paid. That is, the ammount of money I expect myself to have at that exact moment;
-* Final Minimum: My Positive Value, subtracted by all minimum values of my expenses. This is the most ammount of money I expect to have by the end of the month;
-* Final Maximum: My Positive Value, subtracted by all maximum values of my expenses. This is the least ammount of money I epxect to have by the end of the month;
-
-To account for that, each row of cost has 7 columns: 
-* Paid: a checkbox that represents if that cost was already paid for the month;
-* On: a checkbox, tells if the cost will be considerede in any of the calculations;
-* Type: a dropdown, which includes the differentiation between costs and gains, and also serves a purpose in the dynamic-cost type system (explained below);
-* Name: Just gives a name for the cost, will be relevant when using analysis because it will identify the expense which will be minitored through N months;
-* Description: Can have any value, but its common usage is defining a date, or other useful specification for later time;
-* Minimum expense and Maximum Expense. The minimum and maximum expense value can be used in two scenarios: for expenses which I am not exactly sure on the exact value I will pay, but I have a reasonable range that I can work with, or to represent a "current cost" vs "maximum cost" that I am allowed to use in any given cost.
-
-Additionally, the file has special rows colored in blue, that instead of having these fields simply have a name, and are used to separate expenses of different categories.  
-
-### Dynamic-Cost Type System
-There are special types that are used when a particular spending is of a group of several separate spendings throughout
-the month, such as "uber" or "ifood". In order to keep track both of the overall value of this expense, and the individual ones,
-we make it be a "type" and keep all expenses of that type turned off. Then, we have a special row whose cost is the sum of all
-expenses of that special type. These special costs will be called "dynamic expense" in this project. Not only do I want to keep track of these dynamic expenses, I want to have as many details as possible about them: "what" was purchased, "where" it was purchased, "when" it was purchased, and even why when possible.  
-At the end of every month the finances file must be duplicated in order to keep record of every detail from previous months.
 
 ![image](https://github.com/user-attachments/assets/6c75f407-461e-4c9f-ab13-052363bfd9b2)
 
