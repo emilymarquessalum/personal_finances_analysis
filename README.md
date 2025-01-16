@@ -4,7 +4,7 @@
 
 # Goal
 
-This is a system/analysis tool to monitor personal finances, visualize **historical** data and have **predictions** of specific cost categories. There are plans to also make an UI to allow for advanced visualization of decision making.
+This is a system/analysis tool to monitor personal finances, adding income and expenses, creating **budgets** for categories of expenses, visualizing **historical** data and have **predictions** of costs for categories that month.
 
 
 ## Prediction of Budget Cost
