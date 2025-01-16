@@ -8,7 +8,7 @@ This is a system/analysis tool to monitor personal finances, with the following 
 * Add income and expenses that can be recurrent or repeat for a period of time;
 * Create **budgets** for categories of expenses that suggests a limit to how much should be spent in that category in the month;
 * Consider **predictions** based on previous costs for budgets to manage future months;
-* Create saving boxes to keep money in. Additionally, set that box as a goal for the future to have an estimation of when it can be achieved with the current habits of costs (example: a retirement box, a video-game-console box, a new-computer box, etc).
+* Create saving boxes to keep money in. Additionally, set that box as a **future goal** to have an estimation of when it can be achieved with the current habits of costs (example: a retirement box, a video-game-console box, a new-computer box, etc).
 * Visualize **historical** data including graphs for different costs, goal achievements and difference between real values and previous predicted values by the model;
 
 
