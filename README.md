@@ -4,7 +4,7 @@
 
 # Goal
 
-This is a system/analysis tool to monitor personal finances, adding income and expenses, creating **budgets** for categories of expenses, visualizing **historical** data and have **predictions** of costs for categories that month.
+This is a system/analysis tool to monitor personal finances, adding income and expenses, creating **budgets** for categories of expenses, visualizing **historical** data, have **predictions** of costs for categories that month and setting goals for the future to have an estimation of when it can be achieved wit the current habits of costs.
 
 
 ## Prediction of Budget Cost
