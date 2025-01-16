@@ -4,19 +4,13 @@
 
 # Goal
 
-This is a system/analysis tool to monitor personal finances, visualize **historical** data and have **predictions** of specific cost categories. Each month has its own file, to keep a simplified format to short term decision making. A group of files can then be read for advanced functionality. There are plans to also make an UI to allow for advanced visualization of decision making.
-
-1. Visualization:
-* By saving every month expense file in a folder, we can have it **read with python code**, to transform them into a complete **historic**;
-* This historic will show the monthly analysis results in a **PowerBI** report, showing the current consuming behaviour (with graphs of costs over several months);
-* It will also show future months and years, with how much money will be saved overtime;
-* A separate file can be used to set goals for the future (example: purchase a house) setting either a year-target or a savings-target for it to happen. These goals will be shown in the graphs. Additionally, these goals can change values (example: setting so that the cost "rent" goes from X to Y once the house goal is reached);
+This is a system/analysis tool to monitor personal finances, visualize **historical** data and have **predictions** of specific cost categories. There are plans to also make an UI to allow for advanced visualization of decision making.
 
 
-2. Prediction Model
-The prediction model is mainly used for dynamic expense categories, such as transportation, eating out, etc. Any type of leisure is often a dynamic expense, although the model is not limited to it.
+## Prediction of Budget Cost
+The prediction model is used for dynamic expense categories, such as transportation, eating out, etc. 
 
-* Any dinamic cost category can be set to be event-based: N events of X cost (example: you can set that the eating out category happens only 4 times in a month, specifically on Saturdays,and that the average cost of an eating out event is 20 bucks);
+* Any dinamic cost category can be set to be event-based: N events of X cost (example: you can set that the eating out category happens only 4 times in a month, specifically on Saturdays,and that the average cost of an eating out event is 20 bucks). Visually this is represented by the ticket system;
 * An evaluation-by-historic can be enabled. Given previous months, it will determine how much money will be spent at all days of a specific month;
 * event-based and evaluation-by-historic should, when possible, be simultaneously enabled. From this, a contrast can be determined: the target goal (how many events and cost per event are expected), and the current prediction (accounting how many events/cost-per-event were actually noticed in historical behaviour). According to [Ray Charles Howard, on "Here’s How To Build a Better Personal Budget"](https://news.darden.virginia.edu/2024/08/22/heres-how-to-build-a-better-personal-budget/) people make better decisions when using "Optimistic Budgeting" (setting lower cost limits, even below what their previous costs were in previous months). Using only an evaluation-by-historic does not challenge the user to make better decisions. Alternatively, only event-based may end in less flexibility when the previously set eventXcost show ineffectiveness, or when the defined target is not met, leading to potencial debts. Finally, it can be hypothesized that irrealistic expectations that can't be met over a great period of time may cause a lack of motivation to maintain it;
 * In future implementations, the predictions made will be set in calendar format, and react to new inputs. If a cost was predicted to be 20 in a specific day, and the actual value was 30, the model will recalculate each day to account for that value. It will also show the expected debt and a suggestion of where to cut costs to remove that debt. 
