@@ -55,7 +55,12 @@ def get_finances_data(data: pd.DataFrame, date: str):
 
     expected_special_types = ["IFOOD TOTAL", "WITH-OTHER-PEOPLE TOTAL", 
                               "TRANSPORTE TOTAL", "Extra Groceries 🥫 TOTAL",
+                              "Agua Serviço Gasto", 
+                              "Rancho",
                               "Beleza TOTAL"]
+    
+    expected_special_types = [row for row in data.iterrows()][2]#.remove("Custo Comum 🏠")
+    print(f"Special values: {expected_special_types}")
     special_types = {}
 
     # Initialize calculated values

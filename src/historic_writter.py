@@ -17,7 +17,9 @@ def save_finances_summary_to_excel(results: list[dict], output_path: str):
         all_columns.update(result.keys())
         if "Special Costs" in result:
             all_columns.update(result["Special Costs"].keys())
-    all_columns.remove("Special Costs")
+    
+    if "Special Costs" in all_columns:
+        all_columns.remove("Special Costs")
     # Initialize rows for the DataFrame
     processed_rows = []
     for result in results:
