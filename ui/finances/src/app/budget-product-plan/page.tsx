@@ -9,9 +9,7 @@ import { BudgetConfig } from "./data/budget-config";
 import { Typography } from "@mui/material";
 import { BudgetPlanResults } from "./budget-plan-results";
 import ProductTable from "./product-table";
-import { NavBody } from "../layout/nav/nav-body";
-import { NormalDistribution } from "./normal-distribution";
-import { adaptEventsOfChild } from "recharts/types/util/types";
+import { NavBody } from "../layout/nav/nav-body"; 
 
 export class Budget {
     name: string;
