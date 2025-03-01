@@ -2,7 +2,7 @@
 
 # Personal Finances Analysis
 
-<!--@include:./ui/finances/src/app/pages/about/README.md-->
+@include:./ui/finances/src/app/pages/about/README.md-
 
 In here, you can check the [list of features and their recommended order of use](). 
 I will use [penpot](https://penpot.app) to create the designs.
