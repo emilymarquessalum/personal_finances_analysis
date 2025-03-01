@@ -56,11 +56,20 @@ export default function SavingsGraph({ data, objectives }: { data: DataPoint[], 
         };
     });
 
+    if(data.length < 2) {
+        return (
+            <div>
+                
+            </div>
+        );
+    }
     return (
         <div style={{ width: '400px', height: '300px', paddingBottom: '40px' }}>
-            <div>
+            {
+                selectedPoint && 
+                <div>
                 <p>Selected: {selectedPoint?.specialKey ?? selectedPoint?.label ?? "Nenhum"} ({selectedPoint?.value ?? selectedPoint?.prediction ?? 0})</p>
-            </div>
+            </div>}
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={enrichedData}>
                     <XAxis dataKey="label" />

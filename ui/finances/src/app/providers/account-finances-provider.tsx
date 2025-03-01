@@ -5,230 +5,330 @@
  HOLDS INFORMATION OF ALL MONTHS, AND COORDINATES IT ACCORDINGLY
 */
 
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import { AccountItem } from "../data/model/account-item";
 import { useAccountSummary } from "./account-summary-provider";
+import BalanceHistory from "../data/model/balance-history";
+import FinanceHistory from "../data/model/finance-history";
+import { v4 as uuidv4 } from 'uuid';
 
 
 export interface AccountFinancesContextValue {
+    confirmItem(item: AccountItem): unknown;
     currentDate: Date;
+    realCurrentDate: Date;
+    setRealCurrentDate: (date: Date) => void;
     goToNextMonth: () => void;
     goToPreviousMonth: () => void;
+    goToCurrentMonth: () => void;
     addItem: (item: AccountItem) => void;
-    getBalance: () => { income: AccountItem[], expenses: AccountItem[] };
+    deleteItem: (item: AccountItem, eraseAllMonths: boolean) => void;
+    getBalance: () => BalanceHistory;
+    isLoading: boolean;
+    editItem: (oldItem: AccountItem, newItem: AccountItem, editAllMonths: boolean) => void;
+
+    endMonthEarlier: () => void;
 }
 
 
 
 export interface AccountFinancesProps {
     children: React.ReactNode;
+    isLoading: boolean;
+    
 }
 
 export const AccountFinancesContext = React.createContext<AccountFinancesContextValue | undefined>(undefined);
 
-interface BalanceHistory {
-    income: AccountItem[];
-    expenses: AccountItem[];
-}
 
 export function AccountFinancesProvider({ children }: AccountFinancesProps): React.JSX.Element {
-
     const [state, setState] = useState<AccountFinancesContextValue>({
         currentDate: new Date(),
+        realCurrentDate: new Date(),
+        setRealCurrentDate: () => { },
         goToNextMonth: () => { },
         goToPreviousMonth: () => { },
         addItem: () => { },
-        getBalance: () => ({ income: [], expenses: [] })
+        getBalance: () => {
+            return new BalanceHistory();
+        },
+        deleteItem: () => { },
+        confirmItem: () => { },
+        goToCurrentMonth: () => { },
+        editItem: () => { },
+        endMonthEarlier: () => { },
+        isLoading: true
     });
+    useEffect(() => {
+        // Simulate initial loading
+        const timer = setTimeout(() => {
+            setState(prev => ({
+                ...prev,
+                isLoading: false
+            }));
+        }, 1000); // Add a small delay to prevent flash
 
+        return () => clearTimeout(timer);
+    }, []);
+    const [realCurrentDate, setRealCurrentDate] = useState<Date>(new Date());
     const [finalBalance, setFinalBalance] = useState<number>(0);
-
     //const [balanceHistory, ]
-
     /// ALL ITEMS THAT HAVE A REGULARITY RULE ARE SAVED HERE (and make copies of themselves for specific months)
-    const [globalBalance, setGlobalBalance] = useState<BalanceHistory>(
-        {
-            income: [],
-            expenses: []
-        }
-    );
-
-    const [history, setHistory] = useState<Map<string, BalanceHistory>>(new Map());
- 
-
-    function getBalance(): { income: AccountItem[], expenses: AccountItem[] } {
-        const key = `${state.currentDate.getFullYear()}-${state.currentDate.getMonth()}`;
-        return history.get(key) ?? { income: [], expenses: [] };
-    }
-
-
-    function canAddItem(item: AccountItem, currentDate: Date): boolean {
-        return (
-            item.date.getMonth() === currentDate.getMonth() &&
-            item.date.getFullYear() === currentDate.getFullYear()
-        ) || (
-                item.regularity === "monthly" &&
-                (item.date.getMonth() <= currentDate.getMonth() || item.date.getFullYear() < currentDate.getFullYear())
-            );
-    }
+    const [globalBalance, setGlobalBalance] = useState<BalanceHistory>(new BalanceHistory());
+    const [history, setHistory] = useState<FinanceHistory>(new FinanceHistory(new Map()));
+    // Will hold the final balance of each previous month before this one
+    const [historyOfPreviousMonths, setHistoryOfPreviousMonths] = useState<Map<string, number>>(new Map());
 
     function addItem(item: AccountItem) {
-
         if (item.regularity === "monthly") {
-
             setGlobalBalance((prev) => {
-                if (item.type === "income") {
-                    return {
-                        ...prev,
-                        income: [...prev.income, item]
-                    };
-                } else {
-                    return {
-                        ...prev,
-                        expenses: [...prev.expenses, item]
-                    };
-                }
+                const newBalance = new BalanceHistory();
+                prev.income.forEach(i => newBalance.addItem(i));
+                prev.expenses.forEach(i => newBalance.addItem(i));
+                newBalance.addItem(item);
+                return newBalance;
             });
 
-            let key = `${item.date.getFullYear()}-${item.date.getMonth()}`;
-            let monthsChanged = 0;
-            const newHistory = new Map(history);
-            while (newHistory.has(key)) {
-                const current = newHistory.get(key);
-
-                if (current === undefined) {
-                    break;
-                }
-
-                if (item.type == 'expense') {
-                    current.expenses.push(item);
-                } else {
-                    current.income.push(item);
-                }
-                monthsChanged++;
-                newHistory.set(key, current);
-                const newDate = new Date(item.date.getFullYear(), item.date.getMonth() + monthsChanged);
-                key = `${newDate.getFullYear()}-${newDate.getMonth()}`;
-            }
-
-            setHistory(newHistory);
+            history.forEachNextMonth(
+                state.currentDate,
+                (month, balance) => {
+                    const itemCopy = {
+                        ...item,
+                        id: uuidv4(),
+                        originalId: item.id
+                    };
+                    balance.addItem(itemCopy);
+                });
+            setHistory(history.copy());
             return;
         }
 
-        const key = `${item.date.getFullYear()}-${String(item.date.getMonth())}`;
+        history.forCurrentMonth(
+            state.currentDate,
+            (month, balance) => {
+                balance.addItem(item);
+            }
+        );
 
-        // Generate the new Map before setting the state
-        const newHistory = new Map(history);
-
-        let current = newHistory.get(key) ?? { income: [], expenses: [] };
-
-        if (item.type === "income") {
-            current.income.push(item);
-        } else {
-            current.expenses.push(item);
-        }
-
-        newHistory.set(key, current);
-
-        // Now use setState to update it
-        setHistory(newHistory);
-
-
-
-
-    }
- 
-
-    
+        setHistory(history.copy());
+    };
     const accountSummary = useAccountSummary();
-
     useEffect(() => {
 
-        let currentBalance = history.get(`${state.currentDate.getFullYear()}-${state.currentDate.getMonth()}`);
+        let currentBalance = history.getBalance(state.currentDate);
 
-        if(!currentBalance) {
-            currentBalance = {
-                income: [],
-                expenses: []
-            };
-        }
+        let balanceCurrently = finalBalance + history.getAllSumOfItemsCurrentlyReceived(state.currentDate);
         accountSummary.changeAll(
             currentBalance!.income.reduce((sum, item) => sum + item.amount, 0),
             currentBalance!.expenses.reduce((sum, item) => sum + item.amount, 0),
             state.currentDate,
-            finalBalance
+            finalBalance,
+            balanceCurrently
         );
+        accountSummary.setHistoryOfPreviousMonths(historyOfPreviousMonths);
     }, [state.currentDate, history]);
+    function goNMonthsNext(n: number) {
+        let currentDate = state.currentDate;
+        let endBalance = finalBalance;
 
-    function goToNextMonth() {
+        for (let i = 0; i < n; i++) {
+            const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
+            const key = `${newDate.getFullYear()}-${newDate.getMonth()}`;
+            const currentKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
-        const currentDate = state.currentDate; 
-        const newDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1);
-        const key = `${newDate.getFullYear()}-${newDate.getMonth()}`;
-        const currentKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
+            // Retrieve current balance and update the end balance
+            const currentBalance = history.getBalance(currentDate);
+            if (currentBalance) {
+                endBalance += currentBalance.income.reduce((sum, item) => sum + item.amount, 0) -
+                    currentBalance.expenses.reduce((sum, item) => sum + item.amount, 0);
+            }
 
-        // state.currentDate = newDate;
-        setState((prev) => ({
-            ...prev,
-            currentDate: newDate
-        }));
+            // Store previous month's balance
+            setHistoryOfPreviousMonths((prev) => {
+                prev.set(currentKey, endBalance);
+                return new Map(prev);
+            });
 
-        const currentBalance = history.get(currentKey);
-         
-        setFinalBalance(finalBalance + currentBalance!.income.reduce((sum, item) => sum + item.amount, 0) -
-            currentBalance!.expenses.reduce((sum, item) => sum + item.amount, 0));
-
-        if (!history.has(key)) {
-
-            const newBalance = {
-                income: globalBalance.income.map(item => ({ ...item })),
-                expenses: globalBalance.expenses.map(item => ({ ...item }))
-            };
-            setHistory((prevHistory) => {
-                prevHistory.set(key, newBalance);
-
-                return new Map(prevHistory);
-            }); 
-        }  
-
-    }
-
-    function goToPreviousMonth() {
-
-
-        const newDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() - 1);
-        const key = `${newDate.getFullYear()}-${newDate.getMonth()}`;
-
-
-        if (!history.has(key)) {
-            const newBalance = {
-                income: [],
-                expenses: []
-            };
-            setHistory((prevHistory) => {
-                prevHistory.set(key, newBalance);
-
-                return new Map(prevHistory);
-            }); 
-            setFinalBalance(0);
-        } else {
-            const currentBalance = history.get(key);
-            setFinalBalance(finalBalance - 
-                (currentBalance!.income.reduce((sum, item) => sum + item.amount, 0) -
-                currentBalance!.expenses.reduce((sum, item) => sum + item.amount, 0)
-            ));
+            // Access the new month and update history
+            history.accessNewMonth(newDate, globalBalance);
+            currentDate = newDate;
         }
 
+        // Update state after the loop
         setState((prev) => ({
             ...prev,
-            currentDate: newDate
+            currentDate: currentDate
         }));
+
+        setFinalBalance(endBalance);
+        setHistory(history.copy());
     }
+    function goToNextMonth() {
+
+        goNMonthsNext(1);
+    }
+    function goNMonthsBack(n: number) {
+        let currentDate = state.currentDate;
+        let endBalance = finalBalance;
+
+        for (let i = 0; i < n; i++) {
+            const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+            const key = `${newDate.getFullYear()}-${newDate.getMonth()}`;
+
+            // Remove history of previous months
+            setHistoryOfPreviousMonths((prev) => {
+                prev.delete(key);
+                return new Map(prev);
+            });
+
+            if (!history.hasMonth(newDate)) {
+                history.accessNewMonth(newDate, globalBalance);
+                endBalance = 0; // Reset balance when going to an empty month
+            } else {
+                const currentBalance = history.getBalance(newDate);
+                if (currentBalance) {
+                    endBalance -= currentBalance.income.reduce((sum, item) => sum + item.amount, 0) -
+                        currentBalance.expenses.reduce((sum, item) => sum + item.amount, 0);
+                }
+            }
+
+            currentDate = newDate;
+        }
+
+        // Update state after the loop
+        setState((prev) => ({
+            ...prev,
+            currentDate: currentDate
+        }));
+
+        setFinalBalance(endBalance);
+    }
+    function goToPreviousMonth() {
+
+        goNMonthsBack(1);
+    }
+    // Update deleteItem to use IDs
+    const deleteItem = (item: AccountItem, eraseAllMonths: boolean) => {
+        history.forCurrentMonth(
+            state.currentDate,
+            (month, balance) => {
+                balance.removeItem(item);
+            }
+        );
+        setHistory(history.copy());
+
+        if (eraseAllMonths) {
+            setGlobalBalance((prev) => {
+                prev.removeItem(item);
+                return prev;
+            });
+
+
+            let newDate = new Date(item.date.getFullYear(), item.date.getMonth() + 1);
+            let key = `${newDate.getFullYear()}-${newDate.getMonth()}`;
+
+            history.forEachNextMonth(
+                newDate,
+                (month, balance) => {
+                    balance.removeItem(item);
+                }
+            );
+            setHistory(history.copy());
+
+
+        }
+    };
+    function confirmItem(item: AccountItem) {
+
+        history.forCurrentMonth(
+            state.currentDate,
+            (month, balance) => {
+                balance.setItemAsConfirmed(item);
+            }
+        );
+        setHistory(history.copy());
+
+    }
+    const editItem = (oldItem: AccountItem, newItem: AccountItem, editAllMonths: boolean) => {
+        const updatedItem = { ...newItem, id: oldItem.id, originalId: oldItem.originalId };
+
+        if(oldItem.regularity !=="monthly" && newItem.regularity==="monthly") {
+            deleteItem(oldItem, false);
+            addItem(updatedItem);
+            return;     
+        } 
+
+        /*if(oldItem.regularity==="monthly" && newItem.regularity!=="monthly") {
+            deleteItem(oldItem, true);
+            addItem(updatedItem);
+            return; 
+        }*/
+        history.forCurrentMonth(
+            state.currentDate,
+            (month, balance) => {
+                balance.editItem(oldItem, updatedItem);
+            }
+        );
+
+        if (editAllMonths && oldItem.regularity === "monthly") {
+            setGlobalBalance((prev) => {
+                prev.editItem(oldItem, updatedItem);
+                return prev;
+            });
+
+            history.forEachNextMonth(
+                state.currentDate,
+                (month, balance) => {
+                    balance.editItemCopy(oldItem, updatedItem);
+                }
+            );
+        }
+
+        setHistory(history.copy());
+    };
+    const getBalance = () => {
+        return history.getBalance(state.currentDate);
+    };
+    function goToCurrentMonth(params?: { currentDate?: Date | null }) {
+        let currentDate = params?.currentDate ?? realCurrentDate;
+        currentDate ??= realCurrentDate;
+
+        let stateDate = new Date(state.currentDate);
+        const yearDiff = currentDate.getFullYear() - stateDate.getFullYear();
+        const monthDiff = currentDate.getMonth() - stateDate.getMonth();
+        const totalMonthsDiff = yearDiff * 12 + monthDiff;
+
+        if (totalMonthsDiff > 0) {
+            goNMonthsNext(totalMonthsDiff); // Move forward
+        } else if (totalMonthsDiff < 0) {
+            goNMonthsBack(-totalMonthsDiff); // Move backward (use positive value)
+        }
+    }
+
+    const endMonthEarlier = () => {
+
+        const newDate = new Date(realCurrentDate.getFullYear(), realCurrentDate.getMonth() + 1);
+        setRealCurrentDate(newDate);
+
+        goToNextMonth();
+        //goToCurrentMonth({currentDate: newDate}); 
+    };
 
     return (
         <AccountFinancesContext.Provider value={{
-            ...state, goToNextMonth, goToPreviousMonth,
-            addItem, getBalance
+            ...state,
+            isLoading: state.isLoading,
+            realCurrentDate,
+            setRealCurrentDate,
+            goToNextMonth,
+            goToPreviousMonth,
+            addItem,
+            getBalance,
+            deleteItem,
+            confirmItem,
+            goToCurrentMonth,
+            editItem,
+            endMonthEarlier
         }}>
             {children}
         </AccountFinancesContext.Provider>

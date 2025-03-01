@@ -9,15 +9,13 @@ import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { ArrowSquareUpRight as ArrowSquareUpRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowSquareUpRight';
 import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';
- import { paths } from '@/paths'; 
+import { paths } from '@/paths';
 import { NavItemConfig } from './nav';
 import { navIcons } from './nav-icons';
 import { isNavItemActive } from './is-nav-item-active';
 import { Logo } from '../logo';
 import { navItems } from './config';
-
 
 export interface MobileNavProps {
   onClose?: () => void;
@@ -30,26 +28,13 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
 
   return (
     <Drawer
-    
-  variant="persistent" 
+      variant="persistent"
       PaperProps={{
         sx: {
-          '--MobileNav-background': 'var(--mui-palette-neutral-950)',
-          '--MobileNav-color': 'var(--mui-palette-common-white)',
-          '--NavItem-color': 'var(--mui-palette-neutral-300)',
-          '--NavItem-hover-background': 'rgba(255, 255, 255, 0.04)',
-          '--NavItem-active-background': 'var(--mui-palette-primary-main)',
-          '--NavItem-active-color': 'var(--mui-palette-primary-contrastText)',
-          '--NavItem-disabled-color': 'var(--mui-palette-neutral-500)',
-          '--NavItem-icon-color': 'var(--mui-palette-neutral-400)',
-          '--NavItem-icon-active-color': 'var(--mui-palette-primary-contrastText)',
-          '--NavItem-icon-disabled-color': 'var(--mui-palette-neutral-600)',
           bgcolor: 'var(--MobileNav-background)',
           color: 'var(--MobileNav-color)',
           display: 'flex',
           flexDirection: 'column',
-          maxWidth: '100%',
-          scrollbarWidth: 'none',
           width: 'var(--SideNav-width)',
           zIndex: 'var(--MobileNav-zIndex)',
           '&::-webkit-scrollbar': { display: 'none' },
@@ -58,99 +43,91 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
       onClose={onClose}
       open={open}
     >
-      <Stack spacing={2} sx={{ p: 3, }}>
+      <Stack spacing={2} sx={{ p: 3 }}>
         <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
           <Logo color="light" height={32} width={122} />
         </Box>
-       
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Box component="nav" sx={{ flex: '1 1 auto', p: '12px' }}>
         {renderNavItems({ pathname, items: navItems })}
       </Box>
-      <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
-      <Stack spacing={2} sx={{ p: '12px' }}>
-      
-      
-        
-      </Stack>
     </Drawer>
   );
 }
 
-function renderNavItems({ items = [], pathname }: { items?: NavItemConfig[]; pathname: string }): React.JSX.Element {
-  const children = items.reduce((acc: React.ReactNode[], curr: NavItemConfig): React.ReactNode[] => {
-    const { key, ...item } = curr;
-
-    acc.push(<NavItem key={key} pathname={pathname} {...item} />);
-
-    return acc;
-  }, []);
-
-  return (
-    <Stack component="ul" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-      {children}
-    </Stack>
-  );
-}
-
-interface NavItemProps extends Omit<NavItemConfig, 'items'> {
+ 
+interface NavItemProps {
+  item: NavItemConfig;  // Accept the entire NavItemConfig as a prop
   pathname: string;
 }
 
-function NavItem({ disabled, external, href, icon, matcher, pathname, title }: NavItemProps): React.JSX.Element {
-  const active = isNavItemActive({ disabled, external, href, matcher, pathname });
-  const Icon = icon ? navIcons[icon] : null;
+function NavItem({ item, pathname }: NavItemProps): React.JSX.Element {
+  const [open, setOpen] = React.useState(false);
+  const active = isNavItemActive({ ...item, pathname });  // Use the entire item
+  const Icon = item.icon ? navIcons[item.icon] : null;
+
+  if (item.children) {
+    return (
+      <li>
+        <Box
+          role="button"
+          onClick={() => setOpen((prev) => !prev)}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+            p: '10px 16px',
+            borderRadius: 1,
+            bgcolor: open ? 'var(--NavItem-active-background)' : 'transparent',
+            color: open ? 'var(--NavItem-active-color)' : 'var(--NavItem-color)',
+          }}
+        >
+          <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>{item.title}</Typography>
+          <CaretUpDownIcon fontSize="var(--icon-fontSize-md)" />
+        </Box>
+        {open && (
+          <Stack spacing={1} sx={{ pl: 3, mt: 1 }}>
+            {item.children.map((child) => (
+              <NavItem key={child.key} pathname={pathname} item={child} />
+            ))}
+          </Stack>
+        )}
+      </li>
+    );
+  }
 
   return (
     <li>
       <Box
-        {...(href
-          ? {
-              component: external ? 'a' : RouterLink,
-              href,
-              target: external ? '_blank' : undefined,
-              rel: external ? 'noreferrer' : undefined,
-            }
-          : { role: 'button' })}
+        component={item.href ? (item.external ? 'a' : RouterLink) : 'div'}
+        href={item.href}
+        target={item.external ? '_blank' : undefined}
+        rel={item.external ? 'noreferrer' : undefined}
         sx={{
-          alignItems: 'center',
-          borderRadius: 1,
-          color: 'var(--NavItem-color)',
-          cursor: 'pointer',
           display: 'flex',
-          flex: '0 0 auto',
-          gap: 1,
+          alignItems: 'center',
           p: '6px 16px',
-          position: 'relative',
+          borderRadius: 1,
+          color: active ? 'var(--NavItem-active-color)' : 'var(--NavItem-color)',
           textDecoration: 'none',
-          whiteSpace: 'nowrap',
-          ...(disabled && {
-            bgcolor: 'var(--NavItem-disabled-background)',
-            color: 'var(--NavItem-disabled-color)',
-            cursor: 'not-allowed',
-          }),
-          ...(active && { bgcolor: 'var(--NavItem-active-background)', color: 'var(--NavItem-active-color)' }),
+          cursor: 'pointer',
         }}
       >
-        <Box sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', flex: '0 0 auto' }}>
-          {Icon ? (
-            <Icon
-              fill={active ? 'var(--NavItem-icon-active-color)' : 'var(--NavItem-icon-color)'}
-              fontSize="var(--icon-fontSize-md)"
-              weight={active ? 'fill' : undefined}
-            />
-          ) : null}
-        </Box>
-        <Box sx={{ flex: '1 1 auto' }}>
-          <Typography
-            component="span"
-            sx={{ color: 'inherit', fontSize: '0.875rem', fontWeight: 500, lineHeight: '28px' }}
-          >
-            {title}
-          </Typography>
-        </Box>
+        {Icon && <Icon fontSize="var(--icon-fontSize-md)" />}
+        <Typography sx={{ fontSize: '0.875rem', fontWeight: 500, ml: 1 }}>{item.title}</Typography>
       </Box>
     </li>
+  );
+}
+
+function renderNavItems({ items = [], pathname }: { items?: NavItemConfig[]; pathname: string }): React.JSX.Element {
+  return (
+    <Stack component="ul" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
+      {items.map((item) => (
+        <NavItem key={item.key} pathname={pathname} item={item} /> // Pass the entire item here
+      ))}
+    </Stack>
   );
 }

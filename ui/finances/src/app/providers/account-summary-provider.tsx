@@ -24,13 +24,17 @@ export interface AccountSummaryContextValue {
     expenses: number;
     currentDate: Date;
     startBalance: number;
+    currentBalance: number;
+    historyOfPreviousMonths?: Map<string, number>;
 
+
+    setHistoryOfPreviousMonths(historyOfPreviousMonths: Map<string, number>): unknown;
     changeIncome: (value: number) => void;
     changeExpenses: (value: number) => void;
     changeCurrentDate: (value: Date) => void;
     changeStartBalance: (value: number) => void;
 
-    changeAll: (income: number, expenses: number, currentDate: Date, startBalance: number) => void;
+    changeAll: (income: number, expenses: number, currentDate: Date, startBalance: number, currentBalance: number) => void;
 }
 
 export interface AccountSummaryProps {
@@ -49,6 +53,8 @@ export function AccountSummaryProvider({ children }: AccountSummaryProps): React
         income: 0,
         currentDate: new Date(),
         startBalance: 0,
+        currentBalance  : 0,
+        historyOfPreviousMonths: new Map(),
         changeIncome: (value: number) => {
             setState((prevState) => ({ ...prevState, income: value }));
         },
@@ -61,9 +67,12 @@ export function AccountSummaryProvider({ children }: AccountSummaryProps): React
         changeStartBalance: (value: number) => {
             setState((prevState) => ({ ...prevState, startBalance: value }));
         },
-        changeAll: (income: number, expenses: number, currentDate: Date, startBalance: number) => {
-            setState((prevState) => ({ ...prevState, income, expenses, currentDate, startBalance }));
+        changeAll: (income: number, expenses: number, currentDate: Date, startBalance: number, currentBalance: number) => {
+            setState((prevState) => ({ ...prevState, income, expenses, currentDate, startBalance, currentBalance }));
         },
+        setHistoryOfPreviousMonths: (historyOfPreviousMonths: Map<string, number>) => {
+            setState((prevState) => ({ ...prevState, historyOfPreviousMonths }));
+        } 
     });
 
 

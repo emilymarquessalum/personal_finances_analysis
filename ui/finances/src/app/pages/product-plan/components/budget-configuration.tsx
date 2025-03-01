@@ -1,28 +1,34 @@
 
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Paper } from '@mui/material';
-import { BudgetConfig } from './data/budget-config';
+import { ProductPlanConfig } from '../data/budget-config';
 
 const BudgetConfiguration = ({ onSave, budgetConfig } : {
-    onSave: (config: BudgetConfig) => void;
-    budgetConfig: BudgetConfig;
+    onSave: (config: ProductPlanConfig) => void;
+    budgetConfig: ProductPlanConfig | null;
 }) => {
   const [maxCost, setMaxCost] = useState('');
-  const [minPortions, setMinPortions] = useState('');
+  const [minPortions, setMinPortions] = useState(''); 
 
   const handleSave = () => {
-    onSave({ maxCost: parseFloat(maxCost), minPortions: parseInt(minPortions, 10) });
+    onSave({ maxCostPortions: parseFloat(maxCost), minPortions: parseInt(minPortions, 10),
+ 
+     });
   };
 
 
   useEffect(() => {
-    setMaxCost(budgetConfig.maxCost.toString());
+    if (!budgetConfig) {
+      return;
+    }
+    setMaxCost(budgetConfig.maxCostPortions.toString());
     setMinPortions(budgetConfig.minPortions.toString());
   }, [budgetConfig]);
 
   return (
     <Paper style={{ padding: 16, maxWidth: 400, margin: 'auto' }}>
       <h2>Budget Configuration</h2>
+ 
       <TextField
         label="Maximum Cost"
         type="number"
