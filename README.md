@@ -6,7 +6,7 @@ import about from './ui/finances/src/app/pages/about/README.md'
 
 # Personal Finances Analysis
 
-<!--@include:./ui/finances/src/app/pages/about/README.md-->
+@include:./ui/finances/src/app/pages/about/README.md-
 
  
 In here, you can check the [list of features and their recommended order of use](). 
